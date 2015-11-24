@@ -92,7 +92,9 @@ static GLboolean enterFullscreenMode(_GLFWwindow* window)
     _glfwPlatformGetVideoMode(window->monitor, &mode);
     _glfwPlatformGetMonitorPos(window->monitor, &xpos, &ypos);
 
-    [window->ns.object setFrame:NSMakeRect(xpos, ypos, mode.width, mode.height)
+    // Sheado - adding +1 to the height for a performance issue workaround for fullscreen opengl windows on OSX
+    // http://stackoverflow.com/questions/27758027/sprite-kit-serious-fps-issue-in-full-screen-mode-on-os-x
+    [window->ns.object setFrame:NSMakeRect(xpos, ypos, mode.width, mode.height+1)
                         display:YES];
 
     return status;
@@ -867,7 +869,9 @@ static GLboolean createWindow(_GLFWwindow* window,
         _glfwPlatformGetVideoMode(window->monitor, &mode);
         _glfwPlatformGetMonitorPos(window->monitor, &xpos, &ypos);
 
-        contentRect = NSMakeRect(xpos, ypos, mode.width, mode.height);
+        // Sheado - adding +1 to the height for a performance issue workaround for fullscreen opengl windows on OSX
+        // http://stackoverflow.com/questions/27758027/sprite-kit-serious-fps-issue-in-full-screen-mode-on-os-x
+        contentRect = NSMakeRect(xpos, ypos, mode.width, mode.height+1);
     }
     else
         contentRect = NSMakeRect(0, 0, wndconfig->width, wndconfig->height);
